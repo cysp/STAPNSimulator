@@ -52,6 +52,9 @@ BOOL STAPNSimulatorInject(void) {
 	Class UIApplicationClass = [UIApplication class];
 
 	Method applicationInitMethod = class_getInstanceMethod(UIApplicationClass, @selector(init));
+	if (method_getImplementation(applicationInitMethod) == (IMP)STAPNSimulatorApplication_init) {
+		return NO;
+	}
 	UIApplication_init = (__typeof__(UIApplication_init))method_setImplementation(applicationInitMethod, (IMP)STAPNSimulatorApplication_init);
 
 	Method applicationRegisterForRemoteNotificationTypesMethod = class_getInstanceMethod(UIApplicationClass, @selector(registerForRemoteNotificationTypes:));
